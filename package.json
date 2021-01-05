@@ -1,0 +1,14 @@
+{
+    "name": "task-store",
+    "version": "1.0.0",
+    "description": "Share tasks from quickAlgo and QuickPi or other projects from France-IOI to a web server",
+    "homepage": "https://https://github.com/France-ioi/task-store/",
+    "authors": [
+        "Nicolas Went <nicolas.went@epita.fr>"
+    ],
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/France-ioi/task-store/"
+    }
+}
