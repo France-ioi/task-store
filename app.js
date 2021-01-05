@@ -7,6 +7,7 @@ const port = 3000;
 // int res: The response we send to the user (url)
 const server = http.createServer((request, response) => {
     if (request.method === 'POST') {
+        // This allow us to enable that user get our response.end after their post in order to send them the link
         response.setHeader('Access-Control-Allow-Origin', '*');
         response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
         response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
