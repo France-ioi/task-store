@@ -34,19 +34,13 @@ const server = http.createServer((request, response) => {
         request.on('end', () => {
             // create random key:
             const keyName = uuid.v4();
-            const bucketPromise = new AWS.S3({apiVersion: awsApiVersion})
-                .createBucket({Bucket: bucketName}).promise();
 
-            bucketPromise.then(
-                function (dataPromise) {
-                    const objectParams = {Bucket: bucketName, Key: keyName, Body: body};
-                    // const objectParams = {Bucket: bucketName, Key: keyName, Body: "Hello World"};
+            const objectParams = {Bucket: bucketName, Key: keyName, Body: body};
 
-                    const uploadPromise = new AWS.S3({apiVersion: awsApiVersion})
-                        .putObject(objectParams).promise();
-                    uploadPromise.then(dataUpload => console.log("Successfully uploaded data to " + bucketName + "/" + keyName));
-                }
-            ).catch(err => console.error(err, err.stack));
+            const uploadPromise = new AWS.S3({apiVersion: awsApiVersion})
+                .putObject(objectParams).promise();
+            uploadPromise.then(dataUpload => console.log("Successfully uploaded data to " + bucketName + "/" + keyName))
+                .catch(err => console.error(err, err.stack));
 
             response.writeHead(200, {'Content-Type': 'text/html'});
             response.end(keyName.toString());
