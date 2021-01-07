@@ -10,5 +10,8 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/France-ioi/task-store/"
+    },
+    "dependencies": {
+        "aws-sdk": "^2.823.0"
     }
 }
