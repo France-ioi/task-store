@@ -60,20 +60,18 @@ const server = http.createServer((request, response) => {
             const params = {Bucket: bucketName, Key: folder + query.id};
             s3.getObject(params, function (err, data) {
                 if (err) {
-                    // TODO: remove this error
-                    console.error(err, err.stack);
                     response.end(JSON.stringify({
                         status: "error",
                         cause: "wrong query"
                     }));
                 } else {
-                    console.log(data.Body.toString());
+                    response.end(JSON.stringify({
+                        status: "success",
+                        data: JSON.stringify(data.Body.toString())
+                    }));
                 }
             });
         }
-
-        console.log("Query: " + JSON.stringify(query));
-        response.end("hello");
     }
 });
 
