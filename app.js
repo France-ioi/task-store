@@ -11,7 +11,7 @@ AWS.config.getCredentials(function(err) {
 });
 
 const bucketName = 'task-store.france-ioi.org';
-
+const folder = "quick-pi/";
 
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -24,6 +24,8 @@ const server = http.createServer((request, response) => {
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST');
     response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     response.setHeader('Access-Control-Allow-Credentials', true);
+
+    const s3 = new AWS.S3({apiVersion: awsApiVersion});
     // console.log("Access key:", aws.config.credentials.accessKeyId);
     // console.log("AWS_SECRET_KEY: ", aws.config.credentials.secretAccessKey);
     if (request.method === 'POST') {
@@ -32,26 +34,46 @@ const server = http.createServer((request, response) => {
             body += data;
         });
         request.on('end', () => {
-            // create random key:
-            const keyName = uuid.v4();
+            // create random key with folder
+            var keyUuid = uuid.v4();
+            const keyName = folder + keyUuid;
 
             const objectParams = {Bucket: bucketName, Key: keyName, Body: body};
 
-            const uploadPromise = new AWS.S3({apiVersion: awsApiVersion})
-                .putObject(objectParams).promise();
+            const uploadPromise = s3.putObject(objectParams).promise();
             uploadPromise.then(dataUpload => console.log("Successfully uploaded data to " + bucketName + "/" + keyName))
                 .catch(err => console.error(err, err.stack));
 
-            response.writeHead(200, {'Content-Type': 'text/html'});
-            response.end(keyName.toString());
+            response.writeHead(200, {'Content-Type': 'text/plain'});
+            response.end(keyUuid.toString());
         });
     } else {
         const url_parts = url.parse(request.url, true);
         const query = url_parts.query;
+        response.writeHead(200, {'Content-Type': 'text/plain'});
+        if (!query.id) {
+            response.end(JSON.stringify({
+                status: "error",
+                cause: "query not found"
+            }));
+        } else {
+            const params = {Bucket: bucketName, Key: folder + query.id};
+            s3.getObject(params, function (err, data) {
+                if (err) {
+                    // TODO: remove this error
+                    console.error(err, err.stack);
+                    response.end(JSON.stringify({
+                        status: "error",
+                        cause: "wrong query"
+                    }));
+                } else {
+                    console.log(data.Body.toString());
+                }
+            });
+        }
+
         console.log("Query: " + JSON.stringify(query));
-        response.statusCode = 200;
-        response.setHeader('Content-Type', 'text/plain');
-        response.end(conserved);
+        response.end("hello");
     }
 });
 
