@@ -67,7 +67,7 @@ const server = http.createServer((request, response) => {
                 } else {
                     response.end(JSON.stringify({
                         status: "success",
-                        data: JSON.stringify(data.Body.toString())
+                        data: JSON.parse(data.Body.toString())
                     }));
                 }
             });
