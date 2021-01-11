@@ -2,6 +2,8 @@ const http = require('http');
 const url = require('url');
 const AWS = require('aws-sdk');
 const uuid = require('uuid');
+const databaseHelper = require('./database_helper');
+const json_sanitizer = require('./json_sanitizer');
 
 const awsApiVersion = '2006-03-01';
 
@@ -37,6 +39,16 @@ const server = http.createServer((request, response) => {
             // create random key with folder
             var keyUuid = uuid.v4();
             const keyName = folder + keyUuid;
+
+            // we verify that the user input is valid
+            const jsonObject = json_sanitizer.sanitizeUserInput(body);
+            if (!jsonObject) {
+                response.writeHead(200, {'Content-Type': 'text/plain'});
+                response.end("Wrong input, not passing json_sanitizer!");
+                console.error("Received invalid json from user!")
+                return;
+            }
+
 
             const objectParams = {Bucket: bucketName, Key: keyName, Body: body};
 

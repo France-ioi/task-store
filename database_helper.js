@@ -7,6 +7,10 @@ const connection = mysql.createConnection({
     password: authentication.password
 });
 
+module.exports = {
+    addEntry: addEntry
+};
+
 
 connection.connect(function(err) {
     if (err)
@@ -30,6 +34,8 @@ connection.connect(function(err) {
         "id INT AUTO_INCREMENT PRIMARY KEY," +
         "s3uuid VARCHAR(50) NOT NULL," +
         "task_type ENUM('quickpi', 'quickalgo')," +
+        "title VARCHAR(255)," +
+        "version VARCHAR(50)," +
         "nb_access INT(6) UNSIGNED," +
         "license VARCHAR(50)," +
         "authors VARCHAR(255)," +
@@ -40,3 +46,28 @@ connection.connect(function(err) {
        console.log("Table created!")
     });
 })
+
+// The insert statement with the '?' to prevent sql injections.
+const insert_sql = "INSERT INTO " + authentication.projectTableName + " (s3uuid, task_type, title, version, nb_access, license, authors) values ?";
+
+/**
+ * This method allow us to add a new entry to the database
+ * @param json The json that the user send us
+ * @param s3uuid The uuid of the exercise that is sent to s3
+ */
+function addEntry(json, s3uuid) {
+    var toPut = [
+        s3uuid,
+        'quickpi',
+        json.title,
+        json.PEMTaskMetaData.version,
+        0,
+        json.PEMTaskMetaData.license,
+        json.PEMTaskMetaData.authros
+    ]
+    connection.query(insert_sql, [toPut], function(err, result) {
+        if (err)
+            throw err;
+        console.log("Number of records inserted: " + result.affectedRows);
+    })
+}
