@@ -15,7 +15,7 @@ CREATE TABLE `quickpiprojects (
     `id` INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `s3uuid` VARCHAR(50) NOT NULL,
     `creation_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `task_type` VARCHAR(20) NOT NULL,
+    `task_type` ENUM('quickpi', 'quickalgo'),
     `nb_access` INT(6) UNSIGNED,
     `license` VARCHAR(50),
     `authors` VARCHAR(100)
