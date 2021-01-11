@@ -56,7 +56,7 @@ const insert_sql = "INSERT INTO " + authentication.projectTableName + " (s3uuid,
  * @param s3uuid The uuid of the exercise that is sent to s3
  */
 function addEntry(json, s3uuid) {
-    var toPut = [
+    var toPut = [[
         s3uuid,
         'quickpi',
         json.title,
@@ -64,7 +64,7 @@ function addEntry(json, s3uuid) {
         0,
         json.PEMTaskMetaData.license,
         json.PEMTaskMetaData.authors
-    ]
+    ]];
     connection.query(insert_sql, [toPut], function(err, result) {
         if (err)
             throw err;
