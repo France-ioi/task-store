@@ -2,7 +2,7 @@ const http = require('http');
 const url = require('url');
 const AWS = require('aws-sdk');
 const uuid = require('uuid');
-const databaseHelper = require('./database_helper');
+const database_helper = require('./database_helper');
 const json_sanitizer = require('./json_sanitizer');
 
 const awsApiVersion = '2006-03-01';
@@ -49,6 +49,7 @@ const server = http.createServer((request, response) => {
                 return;
             }
 
+            database_helper.addEntry(jsonObject, keyUuid.toString());
 
             const objectParams = {Bucket: bucketName, Key: keyName, Body: body};
 

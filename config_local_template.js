@@ -9,6 +9,6 @@ module.exports = {
     serverName: "localhost",
     username: "username",
     password: "password",
-    databaseName: "quickpiprojects",
+    databaseName: "tasks",
     projectTableName: "quickpiprojects"
 }

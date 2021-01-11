@@ -24,7 +24,7 @@ connection.connect(function(err) {
     });
 
     // specify that we will use this database
-    connection.query("use " + authentication.databaseName, function(err, result) {
+    connection.query("USE " + authentication.databaseName, function(err, result) {
         if (err)
             throw err;
     });
@@ -48,7 +48,7 @@ connection.connect(function(err) {
 })
 
 // The insert statement with the '?' to prevent sql injections.
-const insert_sql = "INSERT INTO " + authentication.projectTableName + " (s3uuid, task_type, title, version, nb_access, license, authors) values ?";
+const insert_sql = "INSERT INTO " + authentication.projectTableName + " (s3uuid, task_type, title, version, nb_access, license, authors) VALUES ?";
 
 /**
  * This method allow us to add a new entry to the database
@@ -63,7 +63,7 @@ function addEntry(json, s3uuid) {
         json.PEMTaskMetaData.version,
         0,
         json.PEMTaskMetaData.license,
-        json.PEMTaskMetaData.authros
+        json.PEMTaskMetaData.authors
     ]
     connection.query(insert_sql, [toPut], function(err, result) {
         if (err)
