@@ -15,12 +15,12 @@ module.exports = {
 connection.connect(function(err) {
     if (err)
         throw err;
-    console.log("Connected!");
+    // console.log("Connected!");
     // create database
     connection.query("CREATE DATABASE IF NOT EXISTS " + authentication.databaseName, function(err, result) {
         if (err)
             throw err;
-        console.log("Database created");
+        // console.log("Database created");
     });
 
     // specify that we will use this database
@@ -43,7 +43,7 @@ connection.connect(function(err) {
     connection.query(tableCreation, function(err, result) {
        if (err)
            throw err;
-       console.log("Table created!")
+       // console.log("Table created!")
     });
 })
 
@@ -68,6 +68,6 @@ function addEntry(json, s3uuid) {
     connection.query(insert_sql, [toPut], function(err, result) {
         if (err)
             throw err;
-        console.log("Number of records inserted: " + result.affectedRows);
+        // console.log("Number of records inserted: " + result.affectedRows);
     })
 }

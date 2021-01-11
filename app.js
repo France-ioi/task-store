@@ -9,7 +9,7 @@ const awsApiVersion = '2006-03-01';
 
 AWS.config.getCredentials(function(err) {
     if (err)
-        console.log(err.stack);
+        console.err(err.stack);
 });
 
 const bucketName = 'task-store.france-ioi.org';
@@ -54,8 +54,9 @@ const server = http.createServer((request, response) => {
             const objectParams = {Bucket: bucketName, Key: keyName, Body: body};
 
             const uploadPromise = s3.putObject(objectParams).promise();
-            uploadPromise.then(dataUpload => console.log("Successfully uploaded data to " + bucketName + "/" + keyName))
-                .catch(err => console.error(err, err.stack));
+            uploadPromise.then(dataUpload => {
+                // console.log("Successfully uploaded data to " + bucketName + "/" + keyName)
+            }).catch(err => console.error(err, err.stack));
 
             response.writeHead(200, {'Content-Type': 'text/plain'});
             response.end(keyUuid.toString());
