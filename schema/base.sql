@@ -14,9 +14,9 @@ DROP TABLE IF EXISTS `quickpiprojects`;
 CREATE TABLE `quickpiprojects (
     `id` INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `s3uuid` VARCHAR(50) NOT NULL,
-    `creation_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `task_type` ENUM('quickpi', 'quickalgo'),
     `nb_access` INT(6) UNSIGNED,
     `license` VARCHAR(50),
-    `authors` VARCHAR(100)
+    `authors` VARCHAR(255),
+    `creation_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

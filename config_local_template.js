@@ -5,7 +5,10 @@
 ** this file to config_local.js once you have done it.
 */
 
-const servername = "localhost";
-const username = "username";
-const password = "password";
-const databasename = "quickpiprojects";
+module.exports = {
+    serverName: "localhost",
+    username: "username",
+    password: "password",
+    databaseName: "quickpiprojects",
+    projectTableName: "quickpiprojects"
+}
