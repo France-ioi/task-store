@@ -90,4 +90,5 @@ function testJson(json, toCompare) {
                 return false;
         }
     }
+    return true;
 }
